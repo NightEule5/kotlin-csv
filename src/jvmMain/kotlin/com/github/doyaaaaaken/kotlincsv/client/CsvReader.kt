@@ -114,7 +114,7 @@ actual class CsvReader actual constructor(
      *   }
      * </pre>
      */
-    suspend inline fun <T> openAsync(fileName: String, read: CsvFileReader.() -> T): T {
+    suspend inline fun <T> openAsync(fileName: String, crossinline read: suspend CsvFileReader.() -> T): T {
         return openAsync(File(fileName), read)
     }
 
@@ -141,7 +141,7 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see openAsync method
      */
-    suspend inline fun <T> openAsync(file: File, read: CsvFileReader.() -> T): T {
+    suspend inline fun <T> openAsync(file: File, crossinline read: suspend CsvFileReader.() -> T): T {
         val br = file.inputStream().bufferedReader(charsetCode)
         return openAsync(br, read)
     }
@@ -169,7 +169,7 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see openAsync method
      */
-    suspend inline fun <T> openAsync(ips: InputStream, read: CsvFileReader.()-> T): T {
+    suspend inline fun <T> openAsync(ips: InputStream, crossinline read: suspend CsvFileReader.()-> T): T {
         val br = ips.bufferedReader(charsetCode)
         return openAsync(br, read)
     }
@@ -183,8 +183,9 @@ actual class CsvReader actual constructor(
     }
 
     @PublishedApi
-    internal suspend inline fun <T> openAsync(br: BufferedReader, doRead: CsvFileReader.() -> T): T {
+    internal suspend inline fun <T> openAsync(br: BufferedReader, crossinline doRead: suspend CsvFileReader.() -> T): T {
         val reader = CsvFileReader(ctx, br)
+        
         return reader.use {
             reader.doRead()
         }
