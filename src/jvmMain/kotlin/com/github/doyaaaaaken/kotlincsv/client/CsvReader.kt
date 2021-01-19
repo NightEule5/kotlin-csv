@@ -13,10 +13,12 @@ import java.nio.charset.Charset
  * @author doyaaaaaken
  */
 actual class CsvReader actual constructor(
-        private val ctx: CsvReaderContext
+        @[JvmField PublishedApi]
+        internal val ctx: CsvReaderContext
 ) : ICsvReaderContext by ctx {
 
-    private val charsetCode = Charset.forName(charset)
+    @[JvmField PublishedApi]
+    internal val charsetCode = Charset.forName(charset)
 
     /**
      * read csv data as String, and convert into List<List<String>>
@@ -93,7 +95,7 @@ actual class CsvReader actual constructor(
      *   }
      * </pre>
      */
-    fun <T> open(fileName: String, read: CsvFileReader.() -> T): T {
+    inline fun <T> open(fileName: String, read: CsvFileReader.() -> T): T {
         return open(File(fileName), read)
     }
 
@@ -112,7 +114,7 @@ actual class CsvReader actual constructor(
      *   }
      * </pre>
      */
-    suspend fun <T> openAsync(fileName: String, read: suspend CsvFileReader.() -> T): T {
+    suspend inline fun <T> openAsync(fileName: String, read: CsvFileReader.() -> T): T {
         return openAsync(File(fileName), read)
     }
 
@@ -125,7 +127,7 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see open method
      */
-    fun <T> open(file: File, read: CsvFileReader.() -> T): T {
+    inline fun <T> open(file: File, read: CsvFileReader.() -> T): T {
         val br = file.inputStream().bufferedReader(charsetCode)
         return open(br, read)
     }
@@ -139,7 +141,7 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see openAsync method
      */
-    suspend fun <T> openAsync(file: File, read: suspend CsvFileReader.() -> T): T {
+    suspend inline fun <T> openAsync(file: File, read: CsvFileReader.() -> T): T {
         val br = file.inputStream().bufferedReader(charsetCode)
         return openAsync(br, read)
     }
@@ -153,7 +155,7 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see open method
      */
-    fun <T> open(ips: InputStream, read: CsvFileReader.() -> T): T {
+    inline fun <T> open(ips: InputStream, read: CsvFileReader.() -> T): T {
         val br = ips.bufferedReader(charsetCode)
         return open(br, read)
     }
@@ -167,19 +169,21 @@ actual class CsvReader actual constructor(
      * Usage example:
      * @see openAsync method
      */
-    suspend fun <T> openAsync(ips: InputStream,  read: suspend CsvFileReader.()-> T): T {
+    suspend inline fun <T> openAsync(ips: InputStream, read: CsvFileReader.()-> T): T {
         val br = ips.bufferedReader(charsetCode)
         return openAsync(br, read)
     }
 
-    private fun <T> open(br: BufferedReader, doRead: CsvFileReader.() -> T): T {
+    @PublishedApi
+    internal inline fun <T> open(br: BufferedReader, doRead: CsvFileReader.() -> T): T {
         val reader = CsvFileReader(ctx, br)
         return reader.use {
             reader.doRead()
         }
     }
 
-    private suspend fun <T> openAsync(br: BufferedReader, doRead: suspend CsvFileReader.() -> T): T {
+    @PublishedApi
+    internal suspend inline fun <T> openAsync(br: BufferedReader, doRead: CsvFileReader.() -> T): T {
         val reader = CsvFileReader(ctx, br)
         return reader.use {
             reader.doRead()

@@ -12,7 +12,9 @@ import java.io.PrintWriter
  *
  * @author doyaaaaaken
  */
-class CsvFileWriter internal constructor(
+class CsvFileWriter
+@PublishedApi
+internal constructor(
         private val ctx: CsvWriterContext,
         private val writer: PrintWriter
 ) : ICsvFileWriter, Closeable, Flushable {

@@ -13,7 +13,9 @@ import java.io.Closeable
  *
  * @author doyaaaaaken
  */
-class CsvFileReader internal constructor(
+class CsvFileReader
+@PublishedApi
+internal constructor(
         private val ctx: CsvReaderContext,
         reader: BufferedReader
 ) : Closeable {

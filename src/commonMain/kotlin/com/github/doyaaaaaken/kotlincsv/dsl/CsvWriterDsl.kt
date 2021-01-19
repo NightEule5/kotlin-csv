@@ -28,7 +28,7 @@ import com.github.doyaaaaaken.kotlincsv.dsl.context.CsvWriterContext
  *
  * @author doyaaaaaken
  */
-fun csvWriter(init: CsvWriterContext.() -> Unit = {}): CsvWriter {
+inline fun csvWriter(init: CsvWriterContext.() -> Unit = {}): CsvWriter {
     val context = CsvWriterContext().apply(init)
     return CsvWriter(context)
 }

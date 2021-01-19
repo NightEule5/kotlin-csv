@@ -29,7 +29,7 @@ import com.github.doyaaaaaken.kotlincsv.dsl.context.CsvReaderContext
  *
  * @author doyaaaaaken
  */
-fun csvReader(init: CsvReaderContext.() -> Unit = {}): CsvReader {
+inline fun csvReader(init: CsvReaderContext.() -> Unit = {}): CsvReader {
     val context = CsvReaderContext().apply(init)
     return CsvReader(context)
 }
